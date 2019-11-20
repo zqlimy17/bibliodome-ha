@@ -1,0 +1,103 @@
+.introduction {
+  height: 100vh;
+  width: 100%;
+  background: url("https://res.cloudinary.com/zqlimy/image/upload/v1574253373/bibliodome-homepage-banner_wde8md.jpg") no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.nav-logo {
+  padding-left: 20px;
+}
+
+body {
+  background-color: #f9fbe7;
+}
+
+body h3 {
+  padding-top: 10px;
+}
+
+#subtitle {
+  font-size: 1.5rem;
+  font-style: italic;
+}
+
+.card .card-image img {
+  width: 250px !important;
+  max-width: none !important;
+}
+
+.book-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+
+.rating {
+  display: inline-block;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  font-size: 50px;
+}
+
+.rating label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  cursor: pointer;
+}
+
+.rating label:last-child {
+  position: static;
+}
+
+.rating label:nth-child(1) {
+  z-index: 5;
+}
+
+.rating label:nth-child(2) {
+  z-index: 4;
+}
+
+.rating label:nth-child(3) {
+  z-index: 3;
+}
+
+.rating label:nth-child(4) {
+  z-index: 2;
+}
+
+.rating label:nth-child(5) {
+  z-index: 1;
+}
+
+.rating label input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.rating label .icon {
+  float: left;
+  color: transparent;
+}
+
+.rating label:last-child .icon {
+  color: #000;
+}
+
+.rating:not(:hover) label input:checked ~ .icon,
+.rating:hover label:hover input ~ .icon {
+  color: #09f;
+}
+
+.rating label input:focus:not(:checked) ~ .icon:last-child {
+  color: #000;
+  text-shadow: 0 0 5px #09f;
+}
+/*# sourceMappingURL=styles.css.map */

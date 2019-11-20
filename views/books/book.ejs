@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>
+        <%=book.title%> | Bibliodome | Where Words Come To Life
+    </title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container text-center">
+        <h1><%-book.title%></h1>
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="<%=book.img%>" />
+            </div>
+            <div class="col-sm-8">
+                <h2><%-book.authors%></h2>
+                <p class="book-description">
+                    <%-book.description%>
+                </p>
+            </div>
+        </div>
+
+        <%if (!currentUser) { %>
+        <form action="/books/<%=book.id%>/rate" method="POST">
+            <button class="btn btn-success" type="submit">
+                Rate this book!
+            </button>
+        </form>
+        <%} else {%>
+        <% let found = false;%>
+        <% for (let i = 0; i < reviews.length; i++) {%>
+        <%  if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) {%>
+        <%   found = true;%>
+        <%  break;%>
+        <% }%>
+        <% }%>
+        <% if (found === true) {%>
+        <p>You have already rated this book!</p>
+        <button class="btn btn-success disabled" type="submit">
+            Rate this book!
+        </button>
+        <a href="/reviews/<%=book.id%>/edit-review">Edit Review</a>
+        <%} else {%>
+        <form action="/books/<%=book.id%>/rate" method="POST">
+            <button class="btn btn-success" type="submit">
+                Rate this book!
+            </button>
+        </form>
+        <% }%>
+        <% }%>
+        <div>
+            <h2>User Reviews</h2>
+            <% for (let i = 0; i < reviews.length; i++) { %>
+            <p>Review: <%= reviews[i].review %></p>
+            <p>Rating: <%= reviews[i].rating %></p>
+            <p>By: <%= reviews[i].reviewer.username %></p>
+            <% if (currentUser) {%>
+            <% if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) {%>
+            <button class='btn'>
+                <a href="/reviews/<%=book.id%>/edit-review">Edit Review</a>
+            </button>
+            <form action="/reviews/<%=reviews[i]._id%>/<%=book.id%>?_method=DELETE" method="POST">
+                <input type="submit" value="Delete">
+            </form>
+            <%}%>
+            <% }%>
+
+            <% } %>
+        </div>
+    </div>
+
+</body>
+
+</html>

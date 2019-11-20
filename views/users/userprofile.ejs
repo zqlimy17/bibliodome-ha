@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container text-center">
+
+        <h1>Welcome, <%=currentUser.name%>!</h1>
+        <div class="row">
+            <div class="col sm-4">
+                <p>Name: <%=currentUser.name%></p>
+                <p>Username: <%= currentUser.username%></p>
+                <a href="/users/profile/<%=currentUser.username%>/edit">Edit Profile</a>
+            </div>
+            <div class="col sm-8">
+                <h2>Your Reviews</h2>
+                <% for (let i = 0; i < reviews.length; i++) {%>
+                <h3><%=reviews[i].book.title%></h3>
+                <p><%=reviews[i].review%></p>
+                <p><%=reviews[i].rating%></p>
+                <a href="/reviews/<%=reviews[i].book.id%>/edit-review">Edit Review</a>
+                <form action="/reviews/<%=reviews[i]._id%>/<%=reviews[i].book.id%>?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete">
+                </form>
+                <%}%>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

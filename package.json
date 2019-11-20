@@ -1,0 +1,35 @@
+{
+  "name": "bibliodome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-react-views": "^0.11.0",
+    "express-session": "^1.17.0",
+    "express-static": "^1.2.6",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.7.9",
+    "node-html-parser": "^1.1.16",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zqlimy17/bibliodome.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zqlimy17/bibliodome/issues"
+  },
+  "homepage": "https://github.com/zqlimy17/bibliodome#readme"
+}

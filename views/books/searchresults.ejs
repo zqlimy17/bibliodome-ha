@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container text-center">
+        <h1>Search Results</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <% for (let i = 0; i < data.items.length; i++) { %>
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <% if (data.items[i].volumeInfo.hasOwnProperty('imageLinks')) {
+                %>
+                            <img src="<%= data.items[i].volumeInfo.imageLinks.thumbnail %>" class="card-img" />
+                            <%} else { %>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+                                width="100%" />
+                            <% } %>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= data.items[i].volumeInfo.title %>
+                                </h5>
+                                <p class="card-text card-description">
+                                    <%= data.items[i].volumeInfo.description %>
+                                </p>
+                                <p class="card-text">
+                                    <%= data.items[i].volumeInfo.authors %>
+                                </p>
+                            </div>
+                            <form action="/books/<%=data.items[i].id%>/rate" method="POST">
+                                <button class="btn btn-success" type="submit">
+                                    Rate this book!
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% if (i === 4) { %>
+            </div>
+            <div class="col-sm-6">
+                <% } %> <%}%>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Sign Up | Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+        <h1>Create User</h1>
+        <div class="row">
+            <form action="/users" method="POST">
+                <div class="row">
+                    <div class="">
+                        <input id="name" type="text" class="" name="name" required>
+                        <label for="name">Your Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <input placeholder="Placeholder" id="username" type="text" class="" name="username" required>
+                        <label for="username">Username</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <input id="password" type="password" class="" name="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <button class="btn" type="submit">Submit
+                </button>
+            </form>
+        </div>
+</body>
+
+</html>

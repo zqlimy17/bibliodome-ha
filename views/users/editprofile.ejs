@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container text-center">
+        <h1>Edit Profile</h1>
+        <div>
+            <form action="/users/<%=currentUser._id%>/edit?_method=PUT" method="POST">
+                <input type="text" name="name" value="<%=currentUser.name%>" />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+
+    </div>
+</body>
+
+</html>

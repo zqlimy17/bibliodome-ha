@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Popular | Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container text-center">
+        <h1>Search Results</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <% for (let i = 0; i < book.length; i++) { %>
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="<%= book[i].img %>" class="card-img" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%=book[i].title %>
+                                </h5>
+                                <p class="card-text card-description">
+                                    <%= book[i].description %>
+                                </p>
+                                <p class="card-text">
+                                    <%= book[i].authors %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% if (i === (book.length / 2) || ((book.length +1 )/ 2)) { %>
+            </div>
+            <div class="col-sm-6">
+                <% } %> <%}%>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

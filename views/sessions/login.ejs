@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head.ejs %>
+    <title>Sign Up | Bibliodome | Where Words Come To Life</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+        <h1>Log In</h1>
+        <div class="row">
+            <form action="/sessions" method="POST" class="">
+                <div class="row">
+                    <div class="">
+                        <input placeholder="Placeholder" id="username" type="text" class="validate" name="username"
+                            required>
+                        <label for="username">User Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <input id="password" type="password" class="validate" name="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <button class="btn" type="submit" name="action">Submit
+                    <i class="">send</i>
+                </button>
+            </form>
+        </div>
+</body>
+
+</html>
