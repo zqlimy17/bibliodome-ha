@@ -28,20 +28,13 @@ reviews.get("/:id/edit-review", (req, res) => {
 
 reviews.put("/:id/edit", (req, res) => {
   Book.findOne({ id: req.params.id }, (err, b) => {
-    console.log(b);
     Review.findOne(
       { reviewer: req.session.currentUser._id, book: b._id },
       (err, r) => {
-        console.log(r);
         let calc = b.rating * b.ratingCount;
-        console.log(calc);
-        console.log(r.rating);
-        console.log(req.body.stars);
         let y =
           parseFloat(calc) - parseFloat(r.rating) + parseFloat(req.body.stars);
-        console.log(y);
         let z = parseFloat(y) / parseFloat(b.ratingCount);
-        console.log(z);
         Book.findOneAndUpdate(
           { _id: b._id },
           {
@@ -67,7 +60,6 @@ reviews.put("/:id/edit", (req, res) => {
 
 reviews.put("/:id/new", async (req, res) => {
   let url = await `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
-  console.log(url);
   await request(url, { json: true }, async (error, response, data) => {
     let newRating;
     Book.findOne({ id: req.params.id }, async (err, result) => {
@@ -118,11 +110,8 @@ reviews.put("/:id/new", async (req, res) => {
                       rating: req.body.stars,
                       review: req.body.review
                     },
-                    (err, xreview) => {
-                      console.log(xreview);
-                    }
+                    (err, xreview) => {}
                   );
-                  console.log("U REVIEW", ureview);
                 }
               }
             );
@@ -185,7 +174,6 @@ reviews.delete("/:rd/:id", async (req, res) => {
     { _id: req.params.rd },
     async (err, deletedReview) => {
       if (err) console.log(err.message);
-      console.log("Review has been deleted!");
       Book.findOne({ id: req.params.id }, async (err, result) => {
         if (err) console.log(err.message);
         if (result.ratingCount > 1) {
@@ -233,7 +221,6 @@ reviews.delete("/:rd/:id", async (req, res) => {
       });
     }
   );
-  console.log("4");
   res.redirect("/books/" + req.params.id);
 });
 

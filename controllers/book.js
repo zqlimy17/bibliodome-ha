@@ -96,8 +96,6 @@ books.get("/:id", async (req, res) => {
     Review.find({ book: foundBook._id })
       .populate("reviewer")
       .exec((err, reviews) => {
-        // console.log(reviews);
-        // console.log("REVIEWER ID IS: " + reviews[0].reviewer._id);
         if (err) console.log(err.message);
         res.render("../views/books/book.ejs", {
           book: foundBook,

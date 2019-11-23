@@ -29,9 +29,6 @@
                         <blockquote>Total Reviews: <%= profile.ratingCount %></blockquote>
                         <% if (currentUser) {%>
                         <% if (profile._id.toString() === currentUser._id.toString()) { %>
-                        <% console.log(profile._id) %>
-                        <% console.log(currentUser._id) %>
-
                         <a class="btn" href="/users/profile/<%=currentUser.username%>/edit">Edit Profile</a>
                         <% } %>
                         <% } %>
@@ -49,7 +46,7 @@
                                         <p>Rating: <%=reviews[i].rating%></p>
                                     </div>
                                     <% if (currentUser) { %>
-                                    <% if (profile._id.toString() === currentUser._id.toString) { %>
+                                    <% if (profile._id.toString() === currentUser._id.toString()) { %>
                                     <div class="card-action">
                                         <a class="btn" href="/reviews/<%=reviews[i].book.id%>/edit-review">Edit
                                             Review</a>

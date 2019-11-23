@@ -29,7 +29,6 @@ users.get("/profile/:username", (req, res) => {
         currentUser: req.session.currentUser
       });
     }
-    console.log(user);
   });
 });
 
@@ -40,7 +39,6 @@ users.get("/profile/:username/edit", (req, res) => {
 });
 
 users.post("/", (req, res) => {
-  console.log(req.body);
   req.body.password = bcrypt.hashSync(
     req.body.password,
     bcrypt.genSaltSync(10)
@@ -54,7 +52,6 @@ users.post("/", (req, res) => {
     },
     (err, createdUser) => {
       if (err) console.log(err.message);
-      console.log(createdUser);
       res.redirect("/sessions/login");
     }
   );

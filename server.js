@@ -16,7 +16,6 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 
 // Global configuration
-// const mongoURI = "mongodb://localhost:27017/bibliodome";
 const mongoURI = process.env.MONGODB_URI;
 const db = mongoose.connection;
 
@@ -28,13 +27,10 @@ mongoose.set("useUnifiedTopology", true);
 
 //Connect to Mongoose
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
-  console.log("\n ~~~~~ \n");
   console.log("The connection with mongod is established.");
-  console.log("\n ~~~~~ \n");
 });
 
 // Connection Error/Success
-// Define callback functions for various events
 db.on("error", err => console.log(err.message + " is mongod not running?"));
 db.on("connected", () => console.log("mongo connected: ", mongoURI));
 db.on("disconnected", () => console.log("mongo disconnected"));
@@ -67,7 +63,6 @@ app.get("/", async (req, res) => {
       book,
       currentUser: req.session.currentUser
     });
-    // console.log(req.session.currentUser);
   });
 });
 
