@@ -12,7 +12,7 @@ users.get("/signup", (req, res) => {
 });
 
 users.get("/profile/:username", (req, res) => {
-  User.findOne({ _id: req.session.currentUser._id }, (err, user) => {
+  User.findOne({ username: req.params.username }, (err, user) => {
     if (err) console.log(err.message);
 
     Review.find({ reviewer: user._id })
@@ -20,8 +20,9 @@ users.get("/profile/:username", (req, res) => {
       .exec((errr, reviews) => {
         if (errr) console.log(errr.message);
         res.render("../views/users/userprofile.ejs", {
-          currentUser: user,
-          reviews
+          currentUser: req.session.currentUser,
+          reviews,
+          profileUser: req.params.username
         });
       });
   });

@@ -13,17 +13,26 @@ sessions.post("/", (req, res) => {
   User.findOne({ username: req.body.username }, (err, foundUser) => {
     // if db error handle the db error
     if (err) {
-      console.log(err);
-      res.send("oops something went wrong");
+      console.log(err.message);
+      res.render("../views/sessions/invalid.ejs", {
+        username: req.body.username,
+        currentUser: req.session.currentUser
+      });
       // if user not found, handle the error
     } else if (!foundUser) {
-      res.send("user not found!");
+      res.render("../views/sessions/invalid.ejs", {
+        username: req.body.username,
+        currentUser: req.session.currentUser
+      });
     } else {
       if (bcrypt.compareSync(req.body.password, foundUser.password)) {
         req.session.currentUser = foundUser;
         res.redirect("/");
       } else {
-        res.send('<a href="/">wrong password</a>');
+        res.render("../views/sessions/invalid.ejs", {
+          username: req.body.username,
+          currentUser: req.session.currentUser
+        });
       }
     }
   });

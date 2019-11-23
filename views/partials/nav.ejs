@@ -17,8 +17,22 @@
                         class="material-icons right">arrow_drop_down</i></a></li>
             <% } else { %>
             <li><a href="/users/signup" class="btn">SIGNUP</a></li>
-
-            <li><a href="/sessions/login">LOGIN</a></li>
+            <li><a class="modal-trigger" href="#login">LOGIN</a></li>
+            <div id="login" class="modal">
+                <div class="modal-content">
+                    <h3 class="teal-text text-darken-3">
+                        Bibliodome</h3>
+                    <form action="/sessions" method="POST" class="">
+                        <input placeholder="Username" id="username" type="text" class="validate" name="username"
+                            style="text-transform: lowercase;" required>
+                        <input placeholder="password" id="password" type="password" class="validate" name="password"
+                            required>
+                        <button class="btn" type="submit" name="action">Submit</button>
+                    </form>
+                    <p class="teal-text lh0">Don't have an account?</p>
+                    <a class="waves-effect waves-green btn" href="/users/signup">Sign Up Here</a>
+                </div>
+            </div>
             <% } %>
         </ul>
     </div>

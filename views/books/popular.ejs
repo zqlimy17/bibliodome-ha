@@ -3,43 +3,73 @@
 
 <head>
     <% include ../partials/head.ejs %>
-    <title>Popular | Bibliodome | Where Words Come To Life</title>
+    <title>Bibliodome | Where Words Come To Life</title>
 </head>
 
 <body>
     <% include ../partials/nav.ejs %>
-    <div class="container text-center">
-        <h1>Search Results</h1>
-        <div class="row">
-            <div class="col-sm-6">
-                <% for (let i = 0; i < book.length; i++) { %>
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="<%= book[i].img %>" class="card-img" />
+    <main>
+        <div class="container">
+            <div class="z-depth-5 center-align">
+                <h3>Search the Bibliodome Library</h3>
+                <div class="row">
+                    <form class="col s12" action="/books/results" method="POST">
+                        <div class="input-field col s6">
+                            <input type="text" name="title" class="validate" id="title" placeholder="Book Title">
+                            <label for="title">Book Title</label>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%=book[i].title %>
-                                </h5>
-                                <p class="card-text card-description">
+                        <div class="input-field col s4">
+                            <input type="text" name="author" id="author" placeholder="Book Author">
+                            <label for="title">Book Author</label>
+                        </div>
+                        <div class="col s2 valign-wrapper">
+                            <p>
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Search
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <h1>Search Results</h1>
+            <div class="row rp">
+                <div class="col s12 m6">
+                    <% for (let i = 0; i < book.length; i++) { %>
+                    <div class="card horizontal teal lighten-5">
+                        <div class="card-image">
+                            <img src="<%= book[i].img %>" style="width:150px;" />
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h5> <%= book[i].title %></h5>
+                                <div class="book-description-prp">
                                     <%= book[i].description %>
-                                </p>
-                                <p class="card-text">
-                                    <%= book[i].authors %>
-                                </p>
+                                </div>
+                                <h6>Author: <%= book[i].author %></h6>
+                                <div>
+                                    <form action="/books/<%=book[i].id%>/rate" method="POST">
+                                        <button class="btn btn" type="submit">
+                                            <i class="material-icons left">rate_review</i>Rate this book!
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <% if (i === ((book.length -1) / 2)) { %>
                 </div>
-                <% if (i === (book.length / 2) || ((book.length +1 )/ 2)) { %>
+                <div class="col s12 m6">
+                    <% } else if (i === (book.length/ 2)) { %>
+                </div>
+                <div class="col s12 m6">
+                    <% } %>
+                    <% } %>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <% } %> <%}%>
         </div>
-      </div>
-    </div>
+    </main>
+    <% include ../partials/footer.ejs %>
 </body>
 
 </html>

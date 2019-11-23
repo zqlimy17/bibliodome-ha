@@ -1,3 +1,25 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+body main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+}
+
+body h3 {
+  padding-top: 10px;
+}
+
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
 .introduction {
   height: 100vh;
   width: 100%;
@@ -6,16 +28,24 @@
   position: relative;
 }
 
+.signup-introduction {
+  height: 100%;
+  background: url("https://res.cloudinary.com/zqlimy/image/upload/v1574259518/bibliodome-signup-banner_wictbl.jpg") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  background-attachment: fixed;
+}
+
+.login-introduction {
+  height: 100%;
+  background: url("https://res.cloudinary.com/zqlimy/image/upload/v1574350169/bibliodome-login-banner_fa5nfe.jpg") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  background-attachment: fixed;
+}
+
 .nav-logo {
   padding-left: 20px;
-}
-
-body {
-  background-color: #f9fbe7;
-}
-
-body h3 {
-  padding-top: 10px;
 }
 
 #subtitle {
@@ -23,9 +53,25 @@ body h3 {
   font-style: italic;
 }
 
-.card .card-image img {
+.card .ci img {
   width: 250px !important;
   max-width: none !important;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+.rp .card-content {
+  padding: 6px 15px 15px 15px;
+}
+
+.rp h5 {
+  margin: 0;
+}
+
+.rp img {
+  width: 150px !important;
 }
 
 .book-description {
@@ -33,71 +79,150 @@ body h3 {
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
+  max-height: 180px;
 }
 
-.rating {
-  display: inline-block;
-  position: relative;
-  height: 50px;
-  line-height: 50px;
-  font-size: 50px;
+.book-description-rp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
-.rating label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  cursor: pointer;
+.book-description-prp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-height: 200px;
 }
 
-.rating label:last-child {
-  position: static;
+div.stars {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-.rating label:nth-child(1) {
-  z-index: 5;
+input.star {
+  display: none;
 }
 
-.rating label:nth-child(2) {
-  z-index: 4;
+label.star {
+  display: inline;
+  padding: 10px;
+  font-size: 36px;
+  color: #444;
+  -webkit-transition: all .2s;
+  transition: all .2s;
 }
 
-.rating label:nth-child(3) {
-  z-index: 3;
+input.star:checked ~ label.star:before {
+  content: '\f005';
+  color: #00695c;
+  -webkit-transition: all .25s;
+  transition: all .25s;
 }
 
-.rating label:nth-child(4) {
-  z-index: 2;
+input.star-5:checked ~ label.star:before {
+  color: #00897b;
 }
 
-.rating label:nth-child(5) {
-  z-index: 1;
+input.star-1:checked ~ label.star:before {
+  color: #004d40;
 }
 
-.rating label input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
+label.star:hover {
+  -webkit-transform: rotate(-15deg) scale(1.3);
+          transform: rotate(-15deg) scale(1.3);
 }
 
-.rating label .icon {
-  float: left;
-  color: transparent;
+label.star:before {
+  content: '\f006';
+  font-family: FontAwesome;
 }
 
-.rating label:last-child .icon {
-  color: #000;
+/***** CSS Magic to Highlight Stars on Hover *****/
+.rating > input:checked ~ label,
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color: #FFD700;
 }
 
-.rating:not(:hover) label input:checked ~ .icon,
-.rating:hover label:hover input ~ .icon {
-  color: #09f;
+/* hover previous stars in list */
+.rating > input:checked + label:hover,
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label,
+.rating > input:checked ~ label:hover ~ label {
+  color: #FFED85;
 }
 
-.rating label input:focus:not(:checked) ~ .icon:last-child {
-  color: #000;
-  text-shadow: 0 0 5px #09f;
+.modal-content {
+  text-align: center;
+}
+
+.modal-content input {
+  text-align: center;
+}
+
+.modal-content .lh0 {
+  line-height: 1;
+}
+
+.member a {
+  color: #4db6ac;
+}
+
+.bk img {
+  width: 100%;
+}
+
+.bk .submit-rating {
+  width: 20%;
+}
+
+.bk .book-description-bk {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 12;
+  -webkit-box-orient: vertical;
+}
+
+.bk .book-description-bk p {
+  margin: 5px;
+}
+
+.cardHolder {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  width: 100%;
+}
+
+blockquote {
+  border-left: 5px solid #1de9b6;
+  /* Just change the color value and that's it*/
+}
+
+.deleteReview {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
 }
 /*# sourceMappingURL=styles.css.map */

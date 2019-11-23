@@ -1,8 +1,28 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
 // * {
-//     outline: 1px solid black;
+//     outline: 1px solid gold;
 //     outline-offset: 1px;
 // }
 
+
+body {
+    // background-color: #f9fbe7;
+
+    main {
+        flex: 1 0 auto;
+    }
+
+    h3 {
+        padding-top: 10px;
+    }
+}
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
 
 .introduction {
     height: 100vh;
@@ -15,17 +35,31 @@
     position: relative;
 }
 
-.nav-logo {
-    padding-left: 20px;
+.signup-introduction {
+    height: 100%;
+    background: url('https://res.cloudinary.com/zqlimy/image/upload/v1574259518/bibliodome-signup-banner_wictbl.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
 }
 
-body {
-    background-color: #f9fbe7;
+.login-introduction {
+    height: 100%;
+    background: url('https://res.cloudinary.com/zqlimy/image/upload/v1574350169/bibliodome-login-banner_fa5nfe.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+}
 
-    h3 {
-        padding-top: 10px;
-    }
 
+.nav-logo {
+    padding-left: 20px;
 }
 
 #subtitle {
@@ -34,15 +68,32 @@ body {
 }
 
 .card {
-    .card-image {
+    .ci {
         img {
             width: 250px !important;
             max-width: none !important;
         }
     }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
 }
 
+.rp {
+    .card-content {
+        padding: 6px 15px 15px 15px;
+    }
 
+    h5 {
+        margin: 0;
+    }
+
+    img {
+        width: 150px !important;
+    }
+}
 
 
 .book-description {
@@ -50,70 +101,146 @@ body {
     display: -webkit-box;
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
+    max-height: 180px;
 }
 
-.rating {
-    display: inline-block;
-    position: relative;
-    height: 50px;
-    line-height: 50px;
-    font-size: 50px;
+.book-description-rp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 
-    label {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        cursor: pointer;
+.book-description-prp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-height: 200px;
+}
 
-        &:last-child {
-            position: static;
-        }
 
-        &:nth-child(1) {
-            z-index: 5;
-        }
+// Star rating on rate.ejs
+div.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
 
-        &:nth-child(2) {
-            z-index: 4;
-        }
+input.star {
+    display: none;
+}
 
-        &:nth-child(3) {
-            z-index: 3;
-        }
+label.star {
+    display: inline;
+    padding: 10px;
+    font-size: 36px;
+    color: #444;
+    transition: all .2s;
+}
 
-        &:nth-child(4) {
-            z-index: 2;
-        }
+input.star:checked~label.star:before {
+    content: '\f005';
+    color: #00695c;
+    transition: all .25s;
+}
 
-        &:nth-child(5) {
-            z-index: 1;
-        }
+input.star-5:checked~label.star:before {
+    color: #00897b;
+}
 
-        input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-        }
+input.star-1:checked~label.star:before {
+    color: #004d40;
+}
 
-        .icon {
-            float: left;
-            color: transparent;
-        }
+label.star:hover {
+    transform: rotate(-15deg) scale(1.3);
+}
 
-        &:last-child .icon {
-            color: #000;
-        }
+label.star:before {
+    content: '\f006';
+    font-family: FontAwesome;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating>input:checked~label,
+/* show gold star when clicked */
+.rating:not(:checked)>label:hover,
+/* hover current star */
+.rating:not(:checked)>label:hover~label {
+    color: #FFD700;
+}
+
+/* hover previous stars in list */
+
+.rating>input:checked+label:hover,
+/* hover current star when changing rating */
+.rating>input:checked~label:hover,
+.rating>label:hover~input:checked~label,
+/* lighten current selection */
+.rating>input:checked~label:hover~label {
+    color: #FFED85;
+}
+
+// labels
+
+// login
+.modal-content {
+    text-align: center;
+
+    input {
+        text-align: center;
     }
 
-    &:not(:hover) label input:checked~.icon,
-    &:hover label:hover input~.icon {
-        color: #09f;
+    .lh0 {
+        line-height: 1;
+    }
+}
+
+// member
+.member {
+    a {
+        color: #4db6ac;
+    }
+}
+
+// book
+.bk {
+    img {
+        width: 100%;
     }
 
-    label input:focus:not(:checked)~.icon:last-child {
-        color: #000;
-        text-shadow: 0 0 5px #09f;
+    .submit-rating {
+        width: 20%
     }
+
+    .book-description-bk {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 12;
+        -webkit-box-orient: vertical;
+
+        p {
+            margin: 5px;
+        }
+    }
+}
+
+.cardHolder {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+blockquote {
+    border-left: 5px solid #1de9b6;
+    /* Just change the color value and that's it*/
+
+}
+
+.deleteReview {
+    display: inline-flex;
 }

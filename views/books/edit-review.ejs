@@ -9,58 +9,80 @@
 </head>
 
 <body>
-    <% include ../partials/nav.ejs %>
-    <div class="container text-center">
-        <h1><%-book.title%></h1>
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="<%=book.thumbnail%>" />
+    <div class="wrapper bk">
+        <% include ../partials/nav.ejs %>
+        <main>
+            <div class="container">
+                <h2><%-book.title%></h2>
+                <div class="row">
+                    <div class="col s12 m3">
+                        <img src="<%=book.img%>" />
+                    </div>
+                    <div class="col s12 m9">
+                        <h4><%-book.author%></h4>
+                        <p class="book-description">
+                            <%-book.description%>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="center-align">
+                    <p>Rating</p>
+                    <form action="/reviews/<%=book.id%>/edit?_method=PUT" method="POST">
+                        <!-- Star Rating -->
+                        <div class="stars">
+                            <% if (review.rating === 5) { %>
+                            <input class="star star-5" id="star-5" type="radio" name="stars" value="5" checked />
+                            <label class="star star-5" for="star-5"></label>
+                            <% } else {%>
+                            <input class="star star-5" id="star-5" type="radio" name="stars" value="5" />
+                            <label class="star star-5" for="star-5"></label>
+                            <% } %>
+                            <% if (review.rating === 4) { %>
+                            <input class="star star-4" id="star-4" type="radio" name="stars" value="4" checked />
+                            <label class="star star-4" for="star-4"></label>
+                            <% } else {%>
+                            <input class="star star-4" id="star-4" type="radio" name="stars" value="4" />
+                            <label class="star star-4" for="star-4"></label>
+                            <% } %>
+                            <% if (review.rating === 3) { %>
+                            <input class="star star-3" id="star-3" type="radio" name="stars" value="3" checked />
+                            <label class="star star-3" for="star-3"></label>
+                            <% } else {%>
+                            <input class="star star-3" id="star-3" type="radio" name="stars" value="3" />
+                            <label class="star star-3" for="star-3"></label>
+                            <% } %>
+                            <% if (review.rating === 2) { %>
+                            <input class="star star-2" id="star-2" type="radio" name="stars" value="2" checked />
+                            <label class="star star-2" for="star-2"></label>
+                            <% } else {%>
+                            <input class="star star-2" id="star-2" type="radio" name="stars" value="2" />
+                            <label class="star star-2" for="star-2"></label>
+                            <% } %>
+                            <% if (review.rating === 1) { %>
+                            <input class="star star-1" id="star-1" type="radio" name="stars" value="1" checked />
+                            <label class="star star-1" for="star-1"></label>
+                            <% } else {%>
+                            <input class="star star-1" id="star-1" type="radio" name="stars" value="1" />
+                            <label class="star star-1" for="star-1"></label>
+                            <% } %>
+                        </div>
+                        <div class="row container">
+                            <div class="input-field col s12">
+                                <textarea name="review" id="textarea-review"
+                                    class="materialize-textarea"><%=review.review%></textarea>
+                                <label for="textarea-review">Edit Review</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light submit-rating" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="col-sm-8">
-                <h2><%-book.authors%></h2>
-                <p class="book-description">
-                    <%-book.description%>
-                </p>
-            </div>
-        </div>
+        </main>
+        <% include ../partials/footer.ejs %>
     </div>
-    <form action="/reviews/<%=book.id%>/edit?_method=PUT" method="POST">
-        <label for="review">Your Review:</label>
-        <textarea name="review" type="text" placeholder="Your Review"></textarea>
-        <div class="rating">
-            <label>
-                <input type="radio" name="stars" value="1" />
-                <span class="icon">★</span>
-            </label>
-            <label>
-                <input type="radio" name="stars" value="2" />
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-            </label>
-            <label>
-                <input type="radio" name="stars" value="3" />
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-            </label>
-            <label>
-                <input type="radio" name="stars" value="4" />
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-            </label>
-            <label>
-                <input type="radio" name="stars" value="5" />
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-                <span class="icon">★</span>
-            </label>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
 </body>
 
 </html>

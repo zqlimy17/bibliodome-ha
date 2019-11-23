@@ -16,7 +16,8 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 
 // Global configuration
-const mongoURI = process.env.MONGODB_URI;
+const mongoURI = "mongodb://localhost:27017/bibliodome";
+// const mongoURI = process.env.MONGODB_URI;
 const db = mongoose.connection;
 
 // Mongoose Deprecation Warnings
@@ -59,7 +60,7 @@ app.use("/reviews", reviewController);
 app.get("/", async (req, res) => {
   let bookData = Book.find({})
     .sort({ rating: -1 })
-    .limit(5);
+    .limit(8);
   bookData.find({}, async (err, book) => {
     if (err) console.log(err.message);
     res.render("index.ejs", {

@@ -9,70 +9,91 @@
 </head>
 
 <body>
-    <% include ../partials/nav.ejs %>
-    <div class="container text-center">
-        <h1><%-book.title%></h1>
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="<%=book.img%>" />
-            </div>
-            <div class="col-sm-8">
-                <h2><%-book.authors%></h2>
-                <p class="book-description">
-                    <%-book.description%>
-                </p>
-            </div>
-        </div>
+    <div class="wrapper bk">
+        <% include ../partials/nav.ejs %>
+        <main>
+            <div class="container">
+                <h2><%-book.title%></h2>
+                <div class="row">
+                    <div class="col s12 m3">
+                        <img src="<%=book.img%>" />
+                    </div>
+                    <div class="col s12 m9">
+                        <h4>By <%-book.author%></h4>
+                        <div class="book-description-bk">
+                            <%-book.description%>
+                        </div>
+                    </div>
+                </div>
+                <%if (!currentUser) { %>
+                <div class="center-align">
+                    <form action="/books/<%= book.id %>/rate" method="POST">
+                        <button class="btn btn-success" type="submit">
+                            Rate this book!
+                        </button>
+                    </form>
+                </div>
+                <% } else { %>
+                <% let found = false; %>
+                <% for (let i = 0; i < reviews.length; i++) { %>
+                <%  if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
+                <%   found = true; %>
+                <%  break; %>
+                <% } %>
+                <% } %>
+                <% if (found === true) { %>
+                <div class="container center-align">
+                    <h5>You have already rated this book!</h5>
+                    <button class="btn disabled" type="submit">
+                        Rate this book!
+                    </button>
+                    <a class="btn" href="/reviews/<%= book.id %>/edit-review">Edit Review</a>
+                </div>
+                <% } else { %>
+                <div class="center-align">
 
-        <%if (!currentUser) { %>
-        <form action="/books/<%=book.id%>/rate" method="POST">
-            <button class="btn btn-success" type="submit">
-                Rate this book!
-            </button>
-        </form>
-        <%} else {%>
-        <% let found = false;%>
-        <% for (let i = 0; i < reviews.length; i++) {%>
-        <%  if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) {%>
-        <%   found = true;%>
-        <%  break;%>
-        <% }%>
-        <% }%>
-        <% if (found === true) {%>
-        <p>You have already rated this book!</p>
-        <button class="btn btn-success disabled" type="submit">
-            Rate this book!
-        </button>
-        <a href="/reviews/<%=book.id%>/edit-review">Edit Review</a>
-        <%} else {%>
-        <form action="/books/<%=book.id%>/rate" method="POST">
-            <button class="btn btn-success" type="submit">
-                Rate this book!
-            </button>
-        </form>
-        <% }%>
-        <% }%>
-        <div>
-            <h2>User Reviews</h2>
-            <% for (let i = 0; i < reviews.length; i++) { %>
-            <p>Review: <%= reviews[i].review %></p>
-            <p>Rating: <%= reviews[i].rating %></p>
-            <p>By: <%= reviews[i].reviewer.username %></p>
-            <% if (currentUser) {%>
-            <% if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) {%>
-            <button class='btn'>
-                <a href="/reviews/<%=book.id%>/edit-review">Edit Review</a>
-            </button>
-            <form action="/reviews/<%=reviews[i]._id%>/<%=book.id%>?_method=DELETE" method="POST">
-                <input type="submit" value="Delete">
-            </form>
-            <%}%>
-            <% }%>
-
-            <% } %>
-        </div>
+                    <form action="/books/<%= book.id %>/rate" method="POST">
+                        <button class="btn btn-success" type="submit">
+                            Rate this book!
+                        </button>
+                    </form>
+                </div>
+                <% } %> <% } %> <div>
+                    <h3 class="center-align">User Reviews</h3>
+                    <div class="row">
+                        <% for (let i = 0; i < reviews.length; i++) { %>
+                        <div class="col s12 m6 l6 xl4">
+                            <div class="card teal">
+                                <div class="card-content white-text">
+                                    <a href="/users/profile/<%= reviews[i].reviewer.username %>"
+                                        class="card-title white-text"><%= reviews[i].reviewer.username %></a>
+                                    <p>Rated: <% for (let j = 0; j < reviews[i].rating; j ++) { %>
+                                        &bigstar;
+                                        <% }; %></p>
+                                    <p><%= reviews[i].review.toString() %></p>
+                                </div>
+                                <% if (currentUser) { %>
+                                <% if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
+                                <div class="card-action">
+                                    <a href="/reviews/<%= book.id %>/edit-review" class='btn'>
+                                        Edit Review
+                                    </a>
+                                    <form action="/reviews/<%= reviews[i]._id %>/<%= book.id %>?_method=DELETE"
+                                        method="POST" class="deleteReview">
+                                        <input type="submit" class='btn' value="Delete Review" />
+                                    </form>
+                                </div>
+                                <% }; %>
+                                <% }; %>
+                            </div>
+                        </div>
+                        <% }; %>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <% include ../partials/footer.ejs %>
     </div>
-
 </body>
 
 </html>

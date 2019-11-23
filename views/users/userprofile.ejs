@@ -7,31 +7,69 @@
 </head>
 
 <body>
-    <% include ../partials/nav.ejs %>
-    <div class="container text-center">
+    <div class="wrapper">
+        <% include ../partials/nav.ejs %>
+        <main>
+            <div class="container">
+                <% if (currentUser) { %>
+                <% if (currentUser.username === profileUser) { %>
+                <h2>Welcome, <%=currentUser.name%>!</h2>
+                <% } %>
+                <% } %>
 
-        <h1>Welcome, <%=currentUser.name%>!</h1>
-        <div class="row">
-            <div class="col sm-4">
-                <p>Name: <%=currentUser.name%></p>
-                <p>Username: <%= currentUser.username%></p>
-                <a href="/users/profile/<%=currentUser.username%>/edit">Edit Profile</a>
-            </div>
-            <div class="col sm-8">
-                <h2>Your Reviews</h2>
-                <% for (let i = 0; i < reviews.length; i++) {%>
-                <h3><%=reviews[i].book.title%></h3>
-                <p><%=reviews[i].review%></p>
-                <p><%=reviews[i].rating%></p>
-                <a href="/reviews/<%=reviews[i].book.id%>/edit-review">Edit Review</a>
-                <form action="/reviews/<%=reviews[i]._id%>/<%=reviews[i].book.id%>?_method=DELETE" method="POST">
-                    <input type="submit" value="Delete">
-                </form>
-                <%}%>
+                <div class="row">
+                    <div class="col s12 m3">
+                        <h4><%= profileUser%>'s Profile</h4>
+                        <% if (currentUser) { %>
+                        <% if (profileUser === currentUser.username) { %>
+                        <blockquote>Name: <%= currentUser.name%></blockquote>
+                        <% } %>
+                        <% } %>
+                        <blockquote>Username: <%= profileUser%></blockquote>
+                        <% if (currentUser) { %>
+                        <% if (profileUser === currentUser.username) { %>
+                        <button class="btn" href="/users/profile/<%=currentUser.username%>/edit">Edit
+                            Profile</button>
+                        <% } %>
+                        <% } %>
+                    </div>
+                    <div class="col s12 m9">
+                        <h4>All Reviews</h4>
+                        <div class="cardHolder">
+                            <% for (let i = 0; i < reviews.length; i++) {%>
+                            <div class="col s12 m6">
+                                <div class="card teal darken-2">
+                                    <div class="card-content white-text">
+                                        <a href="/books/<%= reviews[i].book.id %>"
+                                            class="card-title teal-text text-accent-1"><%=reviews[i].book.title%></a>
+                                        <p>Review: <%=reviews[i].review%></p>
+                                        <p>Rating: <%=reviews[i].rating%></p>
+                                    </div>
+                                    <% if (currentUser) { %>
+                                    <% if (profileUser === currentUser.username) { %>
+                                    <div class="card-action">
+                                        <a class="btn" href="/reviews/<%=reviews[i].book.id%>/edit-review">Edit
+                                            Review</a>
+                                        <form
+                                            action="/reviews/<%=reviews[i]._id%>/<%=reviews[i].book.id%>?_method=DELETE"
+                                            method="POST" class="deleteReview">
+                                            <input type="submit" class='btn' value="Delete Review" />
+                                        </form>
+                                    </div>
+                                    <% } %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
+    </main>
+    <% include ../partials/footer.ejs %>
+                        </div>
 </body>
 
 </html>
