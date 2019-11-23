@@ -1,12 +1,36 @@
-<nav class="teal darken-3">
+<nav class="nav-mobile teal darken-3">
     <div class="nav-wrapper">
         <span class="nav-logo left">
             <a href="/" class="brand-logo"> <i class="material-icons">book</i>
                 <span class="teal-text text-accent-1">Bibliodome</span></a>
         </span>
 
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <ul id="nav-mobile" class="nav-mobile right hide-on-med-and-down">
             <li><a href="/">HOME</a></li>
+            <li><a class="modal-trigger" href="#quicksearch">QUICK SEARCH</a></li>
+            <div id="quicksearch" class="modal">
+                <div class="modal-content quicksearch teal darken-2">
+                    <div class="row">
+                        <h4>Quick Search</h4>
+                        <form class="col s12" action="/books/results" method="POST">
+                            <div class="input-field col s6">
+                                <input class="white-text" type="text" name="title" class="validate" id="title">
+                                <label class="white-text" for="title">Book Title</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input class="white-text" type="text" name="author" id="author">
+                                <label class="white-text" class="white-text" for="title">Book Author</label>
+                            </div>
+                            <div class="col s2 valign-wrapper">
+                                <p>
+                                    <button class="btn waves-effect waves-light" type="submit"
+                                        name="action">Search</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <% if (currentUser) { %>
             <ul id="dropdown1" class="dropdown-content">
                 <li><a href="/users/profile/<%=currentUser.username%>">Your Profile</a></li>

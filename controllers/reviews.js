@@ -27,67 +27,154 @@ reviews.get("/:id/edit-review", (req, res) => {
 });
 
 reviews.put("/:id/edit", (req, res) => {
-  Book.findOneAndUpdate({ id: req.params.id }, (err, foundBook) => {
-    Review.findOneAndUpdate(
-      { reviewer: req.session.currentUser._id, book: foundBook._id },
-      {
-        $set: {
-          rating: req.body.stars,
-          review: req.body.review
-        }
-      },
-      (err, review) => {}
+  Book.findOne({ id: req.params.id }, (err, b) => {
+    console.log(b);
+    Review.findOne(
+      { reviewer: req.session.currentUser._id, book: b._id },
+      (err, r) => {
+        console.log(r);
+        let calc = b.rating * b.ratingCount;
+        console.log(calc);
+        console.log(r.rating);
+        console.log(req.body.stars);
+        let y =
+          parseFloat(calc) - parseFloat(r.rating) + parseFloat(req.body.stars);
+        console.log(y);
+        let z = parseFloat(y) / parseFloat(b.ratingCount);
+        console.log(z);
+        Book.findOneAndUpdate(
+          { _id: b._id },
+          {
+            $set: { rating: z }
+          },
+          err => {
+            Review.updateOne(
+              { reviewer: req.session.currentUser._id, book: b._id },
+              {
+                rating: req.body.stars,
+                review: req.body.review
+              },
+              (err, review) => {
+                res.redirect("/books/" + req.params.id);
+              }
+            );
+          }
+        );
+      }
     );
   });
-  res.redirect("/books/" + req.params.id);
 });
 
 reviews.put("/:id/new", async (req, res) => {
   let url = await `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
   console.log(url);
   await request(url, { json: true }, async (error, response, data) => {
-    let newRating = req.body.stars;
+    let newRating;
     Book.findOne({ id: req.params.id }, async (err, result) => {
-      console.log(result);
-      console.log(result.rating);
       if (err) console.log(err.message);
-      if (result.rating !== null) {
+      if (result !== null) {
         newRating =
           (parseFloat(req.body.stars) +
             parseFloat(result.rating) * parseFloat(result.ratingCount)) /
           (parseFloat(result.ratingCount) + 1);
+        Book.findOneAndUpdate(
+          {
+            id: req.params.id
+          },
+          {
+            $set: { rating: newRating },
+            $inc: {
+              ratingCount: 1
+            }
+          },
+          (err, bookx) => {
+            User.updateOne(
+              {
+                _id: req.session.currentUser._id
+              },
+              {
+                $inc: {
+                  ratingCount: 1
+                }
+              },
+              (err, uuser) => {
+                if (err) console.log(err.message);
+              }
+            );
+            Review.findOne(
+              { _id: req.session.currentUser._id, book: bookx._id },
+              (err, ureview) => {
+                if (!ureview) {
+                  Review.create({
+                    rating: req.body.stars,
+                    review: req.body.review,
+                    reviewer: req.session.currentUser._id,
+                    book: bookx._id
+                  });
+                } else {
+                  Review.updateOne(
+                    { _id: req.session.currentUser._id, book: bookx._id },
+                    {
+                      rating: req.body.stars,
+                      review: req.body.review
+                    },
+                    (err, xreview) => {
+                      console.log(xreview);
+                    }
+                  );
+                  console.log("U REVIEW", ureview);
+                }
+              }
+            );
+            if (err) console.log(err.message);
+          }
+        );
+      } else {
+        Book.findOneAndUpdate(
+          {
+            id: req.params.id
+          },
+          {
+            id: data.id,
+            id: data.id,
+            title: data.volumeInfo.title,
+            description: data.volumeInfo.description,
+            img: data.volumeInfo.imageLinks.thumbnail,
+            author: data.volumeInfo.authors,
+            $set: { rating: req.body.stars },
+            $inc: {
+              ratingCount: 1
+            }
+          },
+          {
+            upsert: true,
+            new: true
+          },
+          (err, book) => {
+            User.updateOne(
+              {
+                _id: req.session.currentUser._id
+              },
+              {
+                $inc: {
+                  ratingCount: 1
+                }
+              },
+              (err, uuser) => {
+                if (err) console.log(err.message);
+              }
+            );
+            Review.create({
+              rating: req.body.stars,
+              review: req.body.review,
+              reviewer: req.session.currentUser._id,
+              book: book._id
+            });
+            if (err) console.log(err.message);
+          }
+        );
       }
-      console.log(newRating);
     });
-    Book.findOneAndUpdate(
-      {
-        id: req.params.id
-      },
-      {
-        id: data.id,
-        id: data.id,
-        title: data.volumeInfo.title,
-        description: data.volumeInfo.description,
-        img: data.volumeInfo.imageLinks.thumbnail,
-        author: data.volumeInfo.authors,
-        $set: { rating: newRating },
-        $inc: {
-          ratingCount: 1
-        }
-      },
-      {
-        upsert: true,
-        new: true
-      },
-      (err, book) => {
-        Review.create({
-          rating: req.body.stars,
-          review: req.body.review,
-          reviewer: req.session.currentUser._id,
-          book: book._id
-        });
-      }
-    );
   });
   res.redirect("/users/profile/" + req.session.currentUser.username);
 });
@@ -97,31 +184,49 @@ reviews.delete("/:rd/:id", async (req, res) => {
   await Review.findOneAndDelete(
     { _id: req.params.rd },
     async (err, deletedReview) => {
-      console.log("DELETED REVIEW IS " + deletedReview);
-      console.log("1 Deleting");
       if (err) console.log(err.message);
       console.log("Review has been deleted!");
       Book.findOne({ id: req.params.id }, async (err, result) => {
-        console.log("2 Finding");
-        console.log("REQ PARAMS ID IS " + req.params.id);
-        console.log("RESULT IS " + result);
-        console.log("DELETED REVIEW IS " + deletedReview);
         if (err) console.log(err.message);
-        if (result.rating !== null) {
-          newRating =
-            (parseFloat(result.rating) * parseFloat(result.ratingCount) -
-              parseFloat(deletedReview.rating)) /
-            (parseFloat(result.ratingCount) - 1);
+        if (result.ratingCount > 1) {
+          if (result.rating !== null) {
+            newRating =
+              (parseFloat(result.rating) * parseFloat(result.ratingCount) -
+                parseFloat(deletedReview.rating)) /
+              (parseFloat(result.ratingCount) - 1);
+          }
+          Book.updateOne(
+            { id: req.params.id },
+            {
+              $set: { rating: newRating },
+              $inc: { ratingCount: -1 }
+            },
+            (err, asd) => {
+              if (err) console.log(err.message);
+            }
+          );
+        } else {
+          Book.updateOne(
+            { id: req.params.id },
+            {
+              $set: { rating: 0 },
+              $inc: { ratingCount: -1 }
+            },
+            (err, asd) => {
+              if (err) console.log(err.message);
+            }
+          );
         }
-        console.log("New Rating is ", newRating);
-        console.log(typeof newRating);
-        Book.updateOne(
-          { id: req.params.id },
+        User.updateOne(
           {
-            $set: { rating: newRating },
-            $inc: { ratingCount: -1 }
+            _id: req.session.currentUser._id
           },
-          (err, asd) => {
+          {
+            $inc: {
+              ratingCount: -1
+            }
+          },
+          (err, uuser) => {
             if (err) console.log(err.message);
           }
         );

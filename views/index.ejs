@@ -42,38 +42,50 @@
                 <div class="col s12">
                     <h2 class="header">Top Rated Books</h2>
                     <% for (let i = 0; i < book.length; i++) { %>
-                    <a href="/books/<%=book[i].id%>/">
-                        <div class="card horizontal teal lighten-5">
+                    <div class="card horizontal teal lighten-5">
+                        <a href="/books/<%=book[i].id%>/">
+
                             <div class="card-image ci">
                                 <img src="<%= book[i].img %>">
                             </div>
-                            <div class="card-stacked">
-                                <div class="card-content">
-                                    <h4><%= book[i].title %></h4>
-                                    <div class="book-description">
-                                        <%-book[i].description%>
-                                    </div>
-                                    <h5>Author: <%= book[i].author %></h5>
-                                    <h6><%= book[i].rating %>/5 Stars (<%= book[i].ratingCount %> reviews)</h6>
+                        </a>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h4> <a href="/books/<%=book[i].id%>/">
+                                        <%= book[i].title %></a></h4>
+                                <div class="book-description">
+                                    <%-book[i].description%>
+                                </div>
+                                <h5>Author: <%= book[i].author %></h5>
+                                <p>
+                                    <% for (let j = 0; j < book[i].rating; j++) { %>
+                                    &bigstar;
+                                    <% } %>
+                                    Rated <%=book[i].rating%> out of 5 stars by
+                                    <% if (book[i].ratingCount === 1) { %>
+                                    1 user.
+                                    <% } else { %>
+                                    <%= book[i].ratingCount %> users.<%}%>
+                                    </p>                                    
+                                    <br />
                                     <div>
                                         <a class="waves-effect waves-light btn" href="/books/<%=book[i].id%>/"><i
-                                                class="material-icons left">rate_review</i>Rate this Book</a>
-                                        <a class="waves-effect waves-light btn"
-                                            href="/books/results/<%=book[i].author%>"><i
-                                                class="material-icons left">face</i>More
-                                            by
-                                            Same Author</a>
-                                    </div>
-                                </div>
+                                        class="material-icons left">rate_review</i>Rate this Book
+                                    <a class="waves-effect waves-light btn" href="/books/results/<%=book[i].author%>"><i
+                                            class="material-icons left">face</i>More
+                                        by
+                                        Same Author</a>
                             </div>
                         </div>
-                    </a>
-                    <% if (i === 7) { %>
-                    <a class="btn" href="/books/popular">View More</a>
-                    <% } %>
-                    <% } %>
+                    </div>
                 </div>
+                </a>
+                <% if (i === 7) { %>
+                <a class="btn" href="/books/popular">View More</a>
+                <% } %>
+                <% } %>
             </div>
+        </div>
         </div>
     </main>
     <% include ./partials/footer.ejs %>

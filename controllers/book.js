@@ -31,6 +31,65 @@ books.get("/results/:author", (req, res) => {
   });
 });
 
+books.get("/:id/rate", async (req, res) => {
+  if (req.session.currentUser) {
+    Book.findOne({ id: req.params.id }, (err, foundBook) => {
+      console.log("1. book is " + foundBook);
+      if (err) {
+      }
+      if (foundBook) {
+        Review.findOne(
+          {
+            reviewer: req.session.currentUser._id.toString(),
+            book: foundBook._id.toString()
+          },
+          async (err, foundReview) => {
+            if (err) {
+            }
+            if (foundReview) {
+              Book.findOne({ id: req.params.id }, async (err, foundBook) => {
+                if (err) console.log(err);
+                Review.find({ book: foundBook._id })
+                  .populate("reviewer")
+                  .exec((err, reviews) => {
+                    // console.log(reviews);
+                    // console.log("REVIEWER ID IS: " + reviews[0].reviewer._id);
+                    if (err) console.log(err.message);
+                    res.render("../views/books/book.ejs", {
+                      book: foundBook,
+                      reviews,
+                      currentUser: req.session.currentUser
+                    });
+                  });
+              });
+            } else {
+              let url = `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
+              request(url, { json: true }, async (err, response, data) => {
+                if (err) console.log(err.message);
+                res.render("../views/books/rate.ejs", {
+                  data,
+                  currentUser: req.session.currentUser
+                });
+              });
+            }
+          }
+        );
+      } else {
+        let url = `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
+        request(url, { json: true }, async (err, response, data) => {
+          if (err) console.log(err.message);
+          res.render("../views/books/rate.ejs", {
+            data,
+            currentUser: req.session.currentUser
+          });
+        });
+      }
+    });
+  } else {
+    res.redirect("/sessions/login");
+  }
+});
+
 books.get("/:id", async (req, res) => {
   Book.findOne({ id: req.params.id }, (err, foundBook) => {
     if (err) console.log(err);
@@ -60,70 +119,6 @@ books.post("/results/", (req, res) => {
       searchAuthor: req.body.author
     });
   });
-});
-
-books.post("/:id/rate", async (req, res) => {
-  if (req.session.currentUser) {
-    Book.findOne({ id: req.params.id }, (err, foundBook) => {
-      console.log("1. book is " + foundBook);
-      if (err) {
-        console.log(err.message);
-      }
-      if (foundBook) {
-        Review.findOne(
-          {
-            reviewer: req.session.currentUser._id.toString(),
-            book: foundBook._id.toString()
-          },
-          async (err, foundReview) => {
-            console.log("2. review is " + foundReview);
-            if (err) {
-              console.log(err.message);
-            }
-            if (foundReview) {
-              Book.findOne({ id: req.params.id }, async (err, foundBook) => {
-                if (err) console.log(err);
-                Review.find({ book: foundBook._id })
-                  .populate("reviewer")
-                  .exec((err, reviews) => {
-                    // console.log(reviews);
-                    // console.log("REVIEWER ID IS: " + reviews[0].reviewer._id);
-                    if (err) console.log(err.message);
-                    res.render("../views/books/book.ejs", {
-                      book: foundBook,
-                      reviews,
-                      currentUser: req.session.currentUser
-                    });
-                  });
-              });
-            } else {
-              let url = `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
-              console.log(url);
-              request(url, { json: true }, async (err, response, data) => {
-                if (err) console.log(err.message);
-                res.render("../views/books/rate.ejs", {
-                  data,
-                  currentUser: req.session.currentUser
-                });
-              });
-            }
-          }
-        );
-      } else {
-        let url = `https://www.googleapis.com/books/v1/volumes/${req.params.id}`;
-        console.log(url);
-        request(url, { json: true }, async (err, response, data) => {
-          if (err) console.log(err.message);
-          res.render("../views/books/rate.ejs", {
-            data,
-            currentUser: req.session.currentUser
-          });
-        });
-      }
-    });
-  } else {
-    res.redirect("/sessions/login");
-  }
 });
 
 module.exports = books;

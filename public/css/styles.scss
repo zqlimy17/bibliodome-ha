@@ -98,7 +98,7 @@ body {
 
 .book-description {
     overflow: hidden;
-    display: -webkit-box;
+    // display: -webkit-box;
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
     max-height: 180px;
@@ -106,14 +106,14 @@ body {
 
 .book-description-rp {
     overflow: hidden;
-    display: -webkit-box;
+    // display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 
 .book-description-prp {
     overflow: hidden;
-    display: -webkit-box;
+    // display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     max-height: 200px;
@@ -198,6 +198,16 @@ label.star:before {
     }
 }
 
+.modal-content.quicksearch {
+    input {
+        text-align: left;
+    }
+
+    .lh0 {
+        line-height: 1;
+    }
+}
+
 // member
 .member {
     a {
@@ -243,4 +253,13 @@ blockquote {
 
 .deleteReview {
     display: inline-flex;
+}
+
+
+
+
+.search {
+    ::-webkit-input-placeholder {
+        color: #009688 !important;
+    }
 }

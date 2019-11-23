@@ -10,7 +10,7 @@
     <% include ../partials/nav.ejs %>
     <main>
         <div class="container">
-            <div class="z-depth-5 center-align">
+            <div class="z-depth-5 center-align teal lighten-4 search">
                 <h3>Search the Bibliodome Library</h3>
                 <div class="row">
                     <form class="col s12" action="/books/results" method="POST">
@@ -38,26 +38,27 @@
                     <% for (let i = 0; i < data.items.length; i++) { %>
                     <div class="card horizontal teal lighten-5">
                         <div class="card-image">
-                            <% if (data.items[i].volumeInfo.hasOwnProperty('imageLinks')) { %>
-                            <img src="<%= data.items[i].volumeInfo.imageLinks.thumbnail %>" class="card-img" />
-                            <%} else { %>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-                                style="width:150px;" />
-                            <% } %>
+                            <a href="/books/<%=data.items[i].id%>/rate">
+                                <% if (data.items[i].volumeInfo.hasOwnProperty('imageLinks')) { %>
+                                <img src="<%= data.items[i].volumeInfo.imageLinks.thumbnail %>" class="card-img" />
+                                <%} else { %>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+                                    style="width:150px;" />
+                                <% } %>
+                            </a>
                         </div>
                         <div class="card-stacked">
                             <div class="card-content">
-                                <h5> <%= data.items[i].volumeInfo.title %></h5>
+                                <h5> <a href="/books/<%=data.items[i].id%>/rate">
+                                        <%= data.items[i].volumeInfo.title %></a></h5>
                                 <div class="book-description-rp">
                                     <%= data.items[i].volumeInfo.description %>
                                 </div>
                                 <h6>Author: <%= data.items[i].volumeInfo.authors %></h6>
                                 <div>
-                                    <form action="/books/<%=data.items[i].id%>/rate" method="POST">
-                                        <button class="btn btn" type="submit">
-                                            <i class="material-icons left">rate_review</i>Rate this book!
-                                        </button>
-                                    </form>
+                                    <a class="btn" href="/books/<%=data.items[i].id%>/rate">
+                                        <i class="material-icons left">rate_review</i>Rate this book!
+                                    </a>
                                 </div>
                             </div>
                         </div>

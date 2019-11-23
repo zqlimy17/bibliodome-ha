@@ -20,79 +20,81 @@
                     </div>
                     <div class="col s12 m9">
                         <h4>By <%-book.author%></h4>
+                        <p>
+                            <% for (let i = 0; i < book.rating; i++) { %>
+                            &bigstar;
+                            <% } %>
+                            Rated <%=book.rating%> out of 5 stars by <% if (book.ratingCount === 1) { %>
+                            1 user.
+                            <% } else { %>
+                            <%= book.ratingCount %> users.<%}%>
+                        </p>
                         <div class="book-description-bk">
-                            <%-book.description%>
-                        </div>
-                    </div>
-                </div>
-                <%if (!currentUser) { %>
-                <div class="center-align">
-                    <form action="/books/<%= book.id %>/rate" method="POST">
-                        <button class="btn btn-success" type="submit">
-                            Rate this book!
-                        </button>
-                    </form>
-                </div>
-                <% } else { %>
-                <% let found = false; %>
-                <% for (let i = 0; i < reviews.length; i++) { %>
-                <%  if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
-                <%   found = true; %>
-                <%  break; %>
-                <% } %>
-                <% } %>
-                <% if (found === true) { %>
-                <div class="container center-align">
-                    <h5>You have already rated this book!</h5>
-                    <button class="btn disabled" type="submit">
-                        Rate this book!
-                    </button>
-                    <a class="btn" href="/reviews/<%= book.id %>/edit-review">Edit Review</a>
-                </div>
-                <% } else { %>
-                <div class="center-align">
-
-                    <form action="/books/<%= book.id %>/rate" method="POST">
-                        <button class="btn btn-success" type="submit">
-                            Rate this book!
-                        </button>
-                    </form>
-                </div>
-                <% } %> <% } %> <div>
-                    <h3 class="center-align">User Reviews</h3>
-                    <div class="row">
-                        <% for (let i = 0; i < reviews.length; i++) { %>
-                        <div class="col s12 m6 l6 xl4">
-                            <div class="card teal">
-                                <div class="card-content white-text">
-                                    <a href="/users/profile/<%= reviews[i].reviewer.username %>"
-                                        class="card-title white-text"><%= reviews[i].reviewer.username %></a>
-                                    <p>Rated: <% for (let j = 0; j < reviews[i].rating; j ++) { %>
-                                        &bigstar;
-                                        <% }; %></p>
-                                    <p><%= reviews[i].review.toString() %></p>
-                                </div>
-                                <% if (currentUser) { %>
-                                <% if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
-                                <div class="card-action">
-                                    <a href="/reviews/<%= book.id %>/edit-review" class='btn'>
-                                        Edit Review
-                                    </a>
-                                    <form action="/reviews/<%= reviews[i]._id %>/<%= book.id %>?_method=DELETE"
-                                        method="POST" class="deleteReview">
-                                        <input type="submit" class='btn' value="Delete Review" />
-                                    </form>
-                                </div>
-                                <% }; %>
-                                <% }; %>
-                            </div>
-                        </div>
-                        <% }; %>
+                            <%- book.description%>
                     </div>
                 </div>
             </div>
-        </main>
-        <% include ../partials/footer.ejs %>
+            <%if (!currentUser) { %>
+            <div class="center-align">
+                <a href="/books/<%= book.id %>/rate" class="btn">
+                    Rate this book!</a>
+            </div>
+            <% } else { %>
+            <% let found = false; %>
+            <% for (let i = 0; i < reviews.length; i++) { %>
+            <%  if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
+            <%   found = true; %>
+            <%  break; %>
+            <% } %>
+            <% } %>
+            <% if (found === true) { %>
+            <div class="container center-align">
+                <h5>You have already rated this book!</h5>
+                <button class="btn disabled">
+                    Rate this book!
+                </button>
+                <a class="btn" href="/reviews/<%= book.id %>/edit-review">Edit Review</a>
+            </div>
+            <% } else { %>
+            <div class="center-align">
+                <a href="/books/<%= book.id %>/rate" class="btn">
+                    Rate this book!</a>
+            </div>
+            <% } %> <% } %> <div>
+                <h3 class="center-align">User Reviews</h3>
+                <div class="row">
+                    <% for (let i = 0; i < reviews.length; i++) { %>
+                    <div class="col s12 m6 l6 xl4">
+                        <div class="card teal">
+                            <div class="card-content white-text">
+                                <a href="/users/profile/<%= reviews[i].reviewer.username %>"
+                                    class="card-title white-text"><%= reviews[i].reviewer.username %></a>
+                                <p>Rated: <% for (let j = 0; j < reviews[i].rating; j ++) { %>
+                                    &bigstar;
+                                    <% }; %></p>
+                                <p><%= reviews[i].review.toString() %></p>
+                            </div>
+                            <% if (currentUser) { %>
+                            <% if (reviews[i].reviewer._id.toString() === currentUser._id.toString()) { %>
+                            <div class="card-action">
+                                <a href="/reviews/<%= book.id %>/edit-review" class='btn'>
+                                    Edit Review
+                                </a>
+                                <form action="/reviews/<%= reviews[i]._id %>/<%= book.id %>?_method=DELETE"
+                                    method="POST" class="deleteReview">
+                                    <input type="submit" class='btn' value="Delete Review" />
+                                </form>
+                            </div>
+                            <% }; %>
+                            <% }; %>
+                        </div>
+                    </div>
+                    <% }; %>
+                </div>
+            </div>
+    </div>
+    </main>
+    <% include ../partials/footer.ejs %>
     </div>
 </body>
 

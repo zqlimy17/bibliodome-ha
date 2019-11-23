@@ -13,18 +13,23 @@ users.get("/signup", (req, res) => {
 
 users.get("/profile/:username", (req, res) => {
   User.findOne({ username: req.params.username }, (err, user) => {
-    if (err) console.log(err.message);
-
-    Review.find({ reviewer: user._id })
-      .populate("book")
-      .exec((errr, reviews) => {
-        if (errr) console.log(errr.message);
-        res.render("../views/users/userprofile.ejs", {
-          currentUser: req.session.currentUser,
-          reviews,
-          profileUser: req.params.username
+    try {
+      Review.find({ reviewer: user._id })
+        .populate("book")
+        .exec((errr, reviews) => {
+          if (errr) console.log(errr.message);
+          res.render("../views/users/userprofile.ejs", {
+            currentUser: req.session.currentUser,
+            reviews,
+            profile: user
+          });
         });
+    } catch (err) {
+      res.render("../views/err/404.ejs", {
+        currentUser: req.session.currentUser
       });
+    }
+    console.log(user);
   });
 });
 
@@ -44,7 +49,8 @@ users.post("/", (req, res) => {
     {
       name: req.body.name,
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      ratingCount: 0
     },
     (err, createdUser) => {
       if (err) console.log(err.message);
@@ -55,10 +61,13 @@ users.post("/", (req, res) => {
 });
 
 users.put("/:id/edit", (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, (err, foundUser) => {
-    res.redirect("/users/profile/" + req.session.currentUser.username);
-    // res.redirect("/users/profile/" + req.session.currentUser.username);
-  });
+  User.findByIdAndUpdate(
+    { _id: req.params.id },
+    { name: req.body.name },
+    (err, foundUser) => {
+      res.redirect("/users/profile/" + req.session.currentUser.username);
+    }
+  );
 });
 
 module.exports = users;
