@@ -38,21 +38,24 @@
                     <% for (let i = 0; i < book.length; i++) { %>
                     <div class="card horizontal teal lighten-5">
                         <div class="card-image">
-                            <img src="<%= book[i].img %>" style="width:150px;" />
+                            <a href="/books/<%=book[i].id%>/rate">
+                                <img src="<%= book[i].img %>" style="width:150px;" />
+                            </a>
                         </div>
                         <div class="card-stacked">
                             <div class="card-content">
-                                <h5> <%= book[i].title %></h5>
+
+
+                                <h5><a href="/books/<%=book[i].id%>/rate"><%= book[i].title %></a></h5>
                                 <div class="book-description-prp">
                                     <%= book[i].description %>
                                 </div>
                                 <h6>Author: <%= book[i].author %></h6>
                                 <div>
-                                    <form action="/books/<%=book[i].id%>/rate" method="POST">
-                                        <button class="btn btn" type="submit">
-                                            <i class="material-icons left">rate_review</i>Rate this book!
-                                        </button>
-                                    </form>
+
+                                    <a href="/books/<%=book[i].id%>/rate" class="btn">
+                                        <i class="material-icons left">rate_review</i>Rate this book!
+                                    </a>
                                 </div>
                             </div>
                         </div>
