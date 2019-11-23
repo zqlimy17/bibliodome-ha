@@ -15,27 +15,19 @@ const express = require("express"),
 require("dotenv").config();
 const PORT = process.env.PORT;
 
-// Global configuration
 const mongoURI = process.env.MONGODB_URI;
 const db = mongoose.connection;
 
-// Mongoose Deprecation Warnings
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
-
-//Connect to Mongoose
 mongoose.connect(mongoURI, { useNewUrlParser: true }, () => {
   console.log("The connection with mongod is established.");
 });
-
-// Connection Error/Success
 db.on("error", err => console.log(err.message + " is mongod not running?"));
 db.on("connected", () => console.log("mongo connected: ", mongoURI));
 db.on("disconnected", () => console.log("mongo disconnected"));
-
-// MIDDLEWARE
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -47,7 +39,6 @@ app.use(
   })
 );
 
-// CONTROLLERS
 app.use("/books", bookController);
 app.use("/users", userController);
 app.use("/sessions", sessionsController);

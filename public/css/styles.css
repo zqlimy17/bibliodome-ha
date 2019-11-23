@@ -231,6 +231,10 @@ blockquote {
   display: inline-flex;
 }
 
+.search {
+  pointer-events: none;
+}
+
 .search ::-webkit-input-placeholder {
   color: #009688 !important;
 }
